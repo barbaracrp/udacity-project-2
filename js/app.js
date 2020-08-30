@@ -33,7 +33,6 @@
  *
 */
 
-// TODO: build the nav
 
 
 // TODO: Add class 'active' to section when near top of viewport
@@ -51,41 +50,44 @@
 //TODO: listen to DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
   buildMenu();
+  activeItem();
 });
 
-// TODO: Build menu
+
 function buildMenu() {
-  //TODO: finding section elements in the page
-  const sectionList = document.querySelectorAll('section');
-  console.log(sectionList);
+  // find section elements in the page
+  const sectionList = document.querySelectorAll('section'); //pelo nome da tag
 
   const list = [];
-  for (let index = 0; index < sectionList.length; index++) {
-    const section = sectionList[index];
-    console.log(section.id, section.dataset.nav);
+  sectionList.forEach(function(item) {      // function(element, i) {} (item é uma var que eh criada internamente em cada loop do for each)
+    const listElement = document.createElement('li'); //criei o li
+    list.push(listElement);  // coloquei dentro da list
+    const link = document.createElement('a'); //criei o a
+    link.href = '#' + item.id; //colocando href dentro do a
+    link.dataset.sectionId = item.id; // salva o ID da section no dataset do a
+    link.textContent = item.dataset.nav; //lendo o texto que esta na prop nav do data attr da section. (html data-nav) (dom dataset.nav)
+    link.classList.add('menu__link'); //colocando a classe
+    listElement.appendChild(link); // colocando link (a) dentro de cada li
+  });
 
-    const listElement = document.createElement('li');
-    list.push(listElement);
-    const anchor = document.createElement('a');
-    anchor.href = '#' + section.id;
-    anchor.textContent = section.dataset.nav;
-    anchor.classList.add('menu__link');
-    console.log(anchor);
-    listElement.appendChild(anchor);
+  const menuList = document.getElementById('navbar__list'); //lendo o ul do html e atribuindo em uma variavel
 
-    console.log(listElement);
-  }
-  const menuList = document.getElementById('navbar__list');
+  menuList.append(...list); //botando os li que eu criei no js, dentro do ul que ja tinha no html
 
-  menuList.append(list);
-
-  //TODO: get the ID and data-nav attributes of each section element
-
-  //TODO: create the menu items using li + anchor elements
-  //TODO: find the menu element and append the menu items into it
 }
 // TODO: Scroll to section on link click
 
 // TODO: Set sections as active
+function activeItem() {
+  const menuList = document.querySelectorAll('.menu__link')
+  for (const link of menuList) {
+    link.addEventListener('click', function () {
+      const oldSection = document.querySelector('section.active');
+      oldSection.classList.remove('active');
 
+      const section = document.getElementById(link.dataset.sectionId);
+      section.classList.add('active');
+    });
+  }
+}
 
