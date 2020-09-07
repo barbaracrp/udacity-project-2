@@ -35,8 +35,21 @@
 
 
 
-// TODO: Add class 'active' to section when near top of viewport
+// TODO: Add class 'active' to section
+window.addEventListener('scroll', () => {
+  const allSections = document.querySelectorAll('section');
+  allSections.forEach((section, key) => {
+    const sectionRect = section.getBoundingClientRect();
+    console.log(sectionRect.top);
+    if (sectionRect.top < window.innerHeight && sectionRect.top >= 0) {
+      section.classList.add('active');
+    } else {
+      section.classList.remove('active');
+    }
+  });
+});
 //use the .classList method to get the list of css classes of an element
+
 
 // TODO: Scroll to anchor ID using scrollTO event
 
@@ -59,7 +72,7 @@ function buildMenu() {
   const sectionList = document.querySelectorAll('section'); //pelo nome da tag
 
   const list = [];
-  sectionList.forEach(function(item) {      // function(element, i) {} (item é uma var que eh criada internamente em cada loop do for each)
+  sectionList.forEach(function(item, key) {      // function(element, i) {} (item é uma var que eh criada internamente em cada loop do for each)
     const listElement = document.createElement('li'); //criei o li
     list.push(listElement);  // coloquei dentro da list
     const link = document.createElement('a'); //criei o a
@@ -67,6 +80,9 @@ function buildMenu() {
     link.dataset.sectionId = item.id; // salva o ID da section no dataset do a
     link.textContent = item.dataset.nav; //lendo o texto que esta na prop nav do data attr da section. (html data-nav) (dom dataset.nav)
     link.classList.add('menu__link'); //colocando a classe
+
+
+
     listElement.appendChild(link); // colocando link (a) dentro de cada li
   });
 
@@ -75,17 +91,26 @@ function buildMenu() {
   menuList.append(...list); //botando os li que eu criei no js, dentro do ul que ja tinha no html
 
 }
+
+
 // TODO: Scroll to section on link click
+
+
 
 // TODO: Set sections as active
 function activeItem() {
   const menuList = document.querySelectorAll('.menu__link')
+  menuList[0].classList.add('active');
   for (const link of menuList) {
-    link.addEventListener('click', function () {
+    link.addEventListener('click', function (event) {
+      console.log(event);
       const oldSection = document.querySelector('section.active');
       oldSection.classList.remove('active');
+      const oldLink = document.querySelector('a.active');
+      oldLink.classList.remove('active');
+      event.target.classList.add('active');
 
-      const section = document.getElementById(link.dataset.sectionId);
+      document.getElementById(link.dataset.sectionId);
       section.classList.add('active');
     });
   }
