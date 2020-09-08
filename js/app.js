@@ -13,54 +13,22 @@
  *
 */
 
-/**
- * Define Global Variables
- *
-*/
-
-
-/**
- * End Global Variables
- * Start Helper Functions
- *
-*/
-
-
-
-/**
- * End Helper Functions
- * Begin Main Functions
- *
-*/
-
-
-
-// TODO: Add class 'active' to section
 window.addEventListener('scroll', () => {
   const allSections = document.querySelectorAll('section');
   allSections.forEach((section, key) => {
     const sectionRect = section.getBoundingClientRect();
+    const sectionLink = document.querySelector(`a[data-section-id="${section.id}"]`) // 'a[data-section-id="?"]'
     console.log(sectionRect.top);
-    if (sectionRect.top < window.innerHeight && sectionRect.top >= 0) {
+    if (sectionRect.top < window.innerHeight/2 && sectionRect.top >= 0) {
       section.classList.add('active');
+      sectionLink.classList.add('active');
     } else {
       section.classList.remove('active');
+      sectionLink.classList.remove('active');
     }
   });
 });
-//use the .classList method to get the list of css classes of an element
 
-
-// TODO: Scroll to anchor ID using scrollTO event
-
-
-/**
- * End Main Functions
- * Begin Events
- *
-*/
-
-//TODO: listen to DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
   buildMenu();
   activeItem();
@@ -68,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function buildMenu() {
-  // find section elements in the page
   const sectionList = document.querySelectorAll('section'); //pelo nome da tag
 
   const list = [];
@@ -76,12 +43,9 @@ function buildMenu() {
     const listElement = document.createElement('li'); //criei o li
     list.push(listElement);  // coloquei dentro da list
     const link = document.createElement('a'); //criei o a
-    link.href = '#' + item.id; //colocando href dentro do a
     link.dataset.sectionId = item.id; // salva o ID da section no dataset do a
     link.textContent = item.dataset.nav; //lendo o texto que esta na prop nav do data attr da section. (html data-nav) (dom dataset.nav)
     link.classList.add('menu__link'); //colocando a classe
-
-
 
     listElement.appendChild(link); // colocando link (a) dentro de cada li
   });
@@ -92,12 +56,6 @@ function buildMenu() {
 
 }
 
-
-// TODO: Scroll to section on link click
-
-
-
-// TODO: Set sections as active
 function activeItem() {
   const menuList = document.querySelectorAll('.menu__link')
   menuList[0].classList.add('active');
@@ -110,9 +68,9 @@ function activeItem() {
       oldLink.classList.remove('active');
       event.target.classList.add('active');
 
-      document.getElementById(link.dataset.sectionId);
+      const section = document.getElementById(link.dataset.sectionId);
       section.classList.add('active');
+      section.scrollIntoView({behavior: "smooth", block: "end", inline: "center"});
     });
   }
 }
-
