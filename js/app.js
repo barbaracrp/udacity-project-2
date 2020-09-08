@@ -18,8 +18,8 @@ window.addEventListener('scroll', () => {
   allSections.forEach((section, key) => {
     const sectionRect = section.getBoundingClientRect();
     const sectionLink = document.querySelector(`a[data-section-id="${section.id}"]`) // 'a[data-section-id="?"]'
-    console.log(sectionRect.top);
-    if (sectionRect.top < window.innerHeight/2 && sectionRect.top >= 0) {
+
+    if (sectionRect.top < window.innerHeight/2 && sectionRect.bottom >= innerHeight/2) {
       section.classList.add('active');
       sectionLink.classList.add('active');
     } else {
@@ -61,16 +61,21 @@ function activeItem() {
   menuList[0].classList.add('active');
   for (const link of menuList) {
     link.addEventListener('click', function (event) {
-      console.log(event);
       const oldSection = document.querySelector('section.active');
-      oldSection.classList.remove('active');
+      if (oldSection) {
+        oldSection.classList.remove('active');
+      }
+
       const oldLink = document.querySelector('a.active');
-      oldLink.classList.remove('active');
+      if (oldLink) {
+        oldLink.classList.remove('active');
+      }
+
       event.target.classList.add('active');
 
       const section = document.getElementById(link.dataset.sectionId);
       section.classList.add('active');
-      section.scrollIntoView({behavior: "smooth", block: "end", inline: "center"});
+      section.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
     });
   }
 }

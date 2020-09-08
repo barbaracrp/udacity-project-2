@@ -64,6 +64,12 @@ section {
 /* ---- Module Rules ---- */
 
 /* Navigation Styles*/
+@media only screen and (max-width: 320px){
+    .navbar__menu .menu__link {
+        font-size: .75rem;
+    }
+}
+
 .navbar__menu ul {
     padding-left: 0;
     margin: 0;
